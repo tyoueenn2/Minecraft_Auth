@@ -1,0 +1,19 @@
+# Node.js webapp ファイルリスト
+# プラグイン起動時にJARからプラグインデータフォルダに展開されます
+package.json
+src/index.js
+src/database/index.js
+src/utils/mojang.js
+src/utils/discord.js
+src/bot/index.js
+src/bot/commands/setup.js
+src/bot/commands/status.js
+src/bot/commands/unlink.js
+src/bot/commands/whitelist.js
+src/bot/events/interactionCreate.js
+src/web/app.js
+src/web/routes/auth.js
+src/web/routes/api.js
+public/index.html
+public/css/style.css
+public/js/app.js

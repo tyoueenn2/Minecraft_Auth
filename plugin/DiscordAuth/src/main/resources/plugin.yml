@@ -1,0 +1,19 @@
+name: DiscordAuth
+version: '${project.version}'
+main: com.discordauth.DiscordAuthPlugin
+api-version: '1.21'
+description: Discord連携認証プラグイン - Discordアカウントとの連携が必要です。Discord BotとWebダッシュボードを内蔵しています。
+author: DiscordAuth
+commands:
+  discordauth:
+    description: DiscordAuth管理コマンド
+    usage: /<command> <reload|status|unlink|list|node>
+    permission: discordauth.admin
+    aliases: [da, dauth]
+permissions:
+  discordauth.admin:
+    description: DiscordAuth管理権限
+    default: op
+  discordauth.bypass:
+    description: 認証バイパス権限
+    default: false

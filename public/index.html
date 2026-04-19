@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Auth — Discordアカウント連携</title>
+  <meta name="description" content="MinecraftアカウントをDiscordと連携してサーバーに参加しましょう。安全で簡単です。">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛏️</text></svg>">
+</head>
+
+<body>
+  <div class="bg-effect">
+    <div class="bg-gradient-1"></div>
+    <div class="bg-gradient-2"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div class="app">
+    <!-- ナビゲーションバー -->
+    <nav class="navbar">
+      <div class="container">
+        <a href="/" class="nav-brand">
+          <div class="nav-brand-icon">⛏️</div>
+          <div class="nav-brand-text">MC<span>Auth</span></div>
+        </a>
+        <div class="nav-user hidden" id="nav-user-section">
+          <img class="nav-avatar" id="nav-avatar" src="" alt="アバター">
+          <span class="nav-username" id="nav-username"></span>
+          <a href="/auth/logout" class="nav-logout">ログアウト</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ヒーローセクション -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-badge">セキュアアカウント連携</div>
+        <h1>あなたの <span class="gradient-text">Minecraft</span> アカウントを連携</h1>
+        <p>DiscordとMinecraftのアカウントを連携してサーバーに参加しましょう。</p>
+
+        <!-- ログインCTA（未ログイン時に表示） -->
+        <div id="login-section" class="login-cta hidden">
+          <a href="/auth/discord" class="btn btn-discord" id="login-btn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
+            </svg>
+            Discordでログイン
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ダッシュボード（ログイン後に表示） -->
+    <section id="dashboard-section" class="dashboard hidden">
+      <div class="container">
+        <!-- サーバー未参加警告 -->
+        <div id="guild-warning" class="guild-warning hidden">
+          ⚠️ 必要なDiscordサーバーのメンバーではありません。先にサーバーに参加してください。
+        </div>
+
+        <div class="content-grid">
+          <!-- 連携カード -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon green">🎮</div>
+              <div>
+                <div class="card-title">アカウント状態</div>
+                <div class="card-subtitle">Minecraft連携状況</div>
+              </div>
+            </div>
+
+            <!-- 連携済み表示（複数アカウント対応） -->
+            <div id="linked-accounts-list" class="hidden">
+              <!-- JSで動的に追加されます -->
+            </div>
+
+            <!-- 未連携表示 -->
+            <div id="status-unlinked" class="status-unlinked hidden">
+              <p>❌ まだMinecraftアカウントが連携されていません</p>
+            </div>
+
+            <!-- 連携フォーム -->
+            <div id="link-form" class="hidden">
+              <div style="margin-bottom: 12px; font-size: 14px; font-weight: 500;">アカウントを追加連携する</div>
+              <div class="input-group">
+                <input type="text" class="input" id="mc-input" placeholder="Minecraftユーザー名を入力..." minlength="3"
+                  maxlength="16">
+                <button class="btn btn-green" id="link-btn">連携する</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 使い方カード -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon purple">📋</div>
+              <div>
+                <div class="card-title">使い方</div>
+                <div class="card-subtitle">3つの簡単なステップ</div>
+              </div>
+            </div>
+            <div class="steps">
+              <div class="step">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <h4>Discordでログイン</h4>
+                  <p>Discordアカウントで認証してサーバーメンバーシップを確認します。</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <h4>Minecraftユーザー名を入力</h4>
+                  <p>Java EditionのMinecraftユーザー名を入力して連携します。</p>
+                </div>
+              </div>
+              <div class="step">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <h4>サーバーに参加</h4>
+                  <p>認証完了！Minecraftサーバーに接続してプレイしましょう。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>Minecraft Discord Auth &copy; 2026 &mdash; セキュアアカウント連携システム</p>
+      </div>
+    </footer>
+  </div>
+
+  <div class="toast-container" id="toast-container"></div>
+  <script src="/js/app.js"></script>
+</body>
+
+</html>
